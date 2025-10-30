@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Curl + jq Demo - Express Server</title>
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <nav class="main-nav">
+            <a href="index.html">Главная</a>
+            <a href="curl-demo.html">Curl Demo</a>
+            <a href="curl-jq-demo.html" class="active">Curl + jq Demo</a>
+        </nav>
+        <h1>🚀 Демонстрация curl + jq для обработки JSON</h1>
+
+        <div class="curl-intro">
+            <h3>📖 Что такое jq?</h3>
+            <p><strong>jq</strong> — это легковесный инструмент командной строки для обработки JSON. Он позволяет фильтровать, преобразовывать и форматировать JSON данные.</p>
+            <p><strong>Установка:</strong></p>
+            <ul>
+                <li>macOS: <code>brew install jq</code></li>
+                <li>Linux (Ubuntu/Debian): <code>sudo apt-get install jq</code></li>
+                <li>Windows: <code>choco install jq</code> (через Chocolatey)</li>
+            </ul>
+            <p><strong>Базовый синтаксис:</strong> <code>curl URL | jq 'фильтр'</code></p>
+        </div>
+
+        <div class="curl-examples">
+            <h3>🧪 Примеры использования curl + jq</h3>
+            <p>Ниже примеры команд для обработки JSON-ответов от нашего API. Попробуйте выполнить их в терминале!</p>
+
+            <div class="example">
+                <h4>Форматированный вывод JSON</h4>
+                <p>Базовое использование jq для красивого вывода JSON.</p>
+                <pre><code>curl -s http://localhost:3000/api/ | jq '.'</code></pre>
+                <button hx-get="/api/" hx-target="#result1" hx-swap="innerHTML">Тест API</button>
+                <div id="result1" class="result"></div>
+            </div>
+
+            <div class="example">
+                <h4>Извлечение конкретного поля</h4>
+                <p>Получение значения поля message из ответа.</p>
+                <pre><code>curl -s http://localhost:3000/api/ | jq '.message'</code></pre>
+                <button hx-get="/api/" hx-target="#result2" hx-swap="innerHTML">Тест API</button>
+                <div id="result2" class="result"></div>
+            </div>
+
+            <div class="example">
+                <h4>Фильтрация объекта memory</h4>
+                <p>Получение только информации о памяти из статуса.</p>
+                <pre><code>curl -s http://localhost:3000/api/status | jq '.memory'</code></pre>
+                <button hx-get="/api/status" hx-target="#result3" hx-swap="innerHTML">Тест API</button>
+                <div id="result3" class="result"></div>
+            </div>
+
+            <div class="example">
+                <h4>Выборка нескольких полей</h4>
+                <p>Создание нового объекта с выбранными полями.</p>
+                <pre><code>curl -s http://localhost:3000/api/hello | jq '{ msg: .message, ver: .data.version }'</code></pre>
+                <button hx-get="/api/hello" hx-target="#result4" hx-swap="innerHTML">Тест API</button>
+                <div id="result4" class="result"></div>
+            </div>
+
+            <div class="example">
+                <h4>Условное форматирование</h4>
+                <p>Преобразование uptime в человекочитаемый формат.</p>
+                <pre><code>curl -s http://localhost:3000/api/info/status | jq '{ status: .status, uptime: "\(.uptime | floor) секунд" }'</code></pre>
+                <button hx-get="/api/info/status" hx-target="#result5" hx-swap="innerHTML">Тест API</button>
+                <div id="result5" class="result"></div>
+            </div>
+        </div>
+
+        <div class="curl-tips">
+            <h3>💡 Полезные фильтры jq</h3>
+            <ul>
+                <li><code>.</code> - вывести весь JSON с форматированием</li>
+                <li><code>.field</code> - получить значение поля</li>
+                <li><code>{ new: .old }</code> - создать новый объект</li>
+                <li><code>select(условие)</code> - фильтровать по условию</li>
+                <li><code>map(выражение)</code> - преобразовать массив</li>
+                <li><code>keys</code> - получить ключи объекта</li>
+            </ul>
+
+            <h3>🎯 Продвинутые примеры</h3>
+            <ul>
+                <li>Объединение данных из разных запросов (с использованием переменной):</li>
+                <p>Сначала получаем порт и сохраняем его в переменную, затем используем эту переменную в основном запросе:</p>
+                <pre><code>PORT=$(curl -s http://localhost:3000/api/info/port | jq -r '.port'); curl -s http://localhost:3000/api/status | jq --arg port "$PORT" '. + {port: $port}'</code></pre>
+                
+                <li>Простое форматирование даты и времени:</li>
+                <p>Извлекаем и форматируем timestamp:</p>
+                <pre><code>curl -s http://localhost:3000/api/ | jq -r '.timestamp | split("T") | .[0]'</code></pre>
+                
+                <li>Вывод в CSV формате (с raw output):</li>
+                <p>Создаем массив из полей и преобразуем его в CSV формат:</p>
+                <pre><code>curl -s http://localhost:3000/api/status | jq -r '[.status, .uptime] | @csv'</code></pre>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

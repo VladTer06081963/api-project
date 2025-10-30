@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Express Server Test</title>
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <nav class="main-nav">
+            <a href="index.html" class="active">Главная</a>
+            <a href="curl-demo.html">Curl Demo</a>
+            <a href="curl-jq-demo.html">Curl + jq Demo</a>
+        </nav>
+        <h1>🚀 Express Server Test Page</h1>
+
+        <div class="status">
+            <h3>✅ Сервер работает!</h3>
+            <p>Express сервер успешно запущен и отвечает на запросы.</p>
+        </div>
+
+        <div class="routes">
+            <h3>📋 Доступные API роуты:</h3>
+            <ul>
+                <li><strong>GET /</strong> - Главная страница (JSON)</li>
+                <li><strong>GET /htmx/</strong> - Главная страница (HTML для htmx)</li>
+                <li><strong>GET /status</strong> - Статус сервера (JSON)</li>
+                <li><strong>GET /htmx/status</strong> - Статус сервера (HTML для htmx)</li>
+                <li><strong>GET /api/hello</strong> - Пример API (JSON)</li>
+                <li><strong>GET /htmx/api/hello</strong> - Пример API (HTML для htmx)</li>
+                <li><strong>GET /htmx/nonexistent</strong> - Тест 404 (HTML для htmx)</li>
+            </ul>
+        </div>
+
+        <div class="api-test">
+            <h3>🧪 Тестирование API</h3>
+            <button hx-get="/htmx/" hx-target="#result" hx-swap="innerHTML">Тест /</button>
+            <button hx-get="/htmx/status" hx-target="#result" hx-swap="innerHTML">Тест /status</button>
+            <button hx-get="/htmx/api/hello" hx-target="#result" hx-swap="innerHTML">Тест /api/hello</button>
+            <button hx-get="/htmx/nonexistent" hx-target="#result" hx-swap="innerHTML">Тест 404</button>
+
+            <div id="result"></div>
+        </div>
+
+        <div class="info">
+            <h3>📊 Информация о сервере:</h3>
+            <ul>
+                <li><strong>Порт:</strong> 3000</li>
+                <li><strong>Framework:</strong> Express.js</li>
+                <li><strong>Статус:</strong> Активен</li>
+                <li><strong>Время запуска:</strong> <span>26.10.2025, 11:37</span></li>
+            </ul>
+        </div>
+
+    </div>
+</body>
+</html>

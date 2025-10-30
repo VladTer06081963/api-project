@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Curl Demo - Express Server</title>
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <nav class="main-nav">
+            <a href="index.html">Главная</a>
+            <a href="curl-demo.html" class="active">Curl Demo</a>
+            <a href="curl-jq-demo.html">Curl + jq Demo</a>
+        </nav>
+        <h1>🚀 Демонстрация curl для тестирования API</h1>
+
+        <div class="curl-intro">
+            <h3>📖 Что такое curl?</h3>
+            <p><strong>curl</strong> — это утилита командной строки для отправки HTTP-запросов и получения ответов. Она позволяет тестировать API без браузера, отправляя GET, POST и другие запросы. Полезна для разработчиков и автоматизации.</p>
+            <p><strong>Базовый синтаксис:</strong> <code>curl [опции] URL</code></p>
+            <p><strong>Примеры опций:</strong></p>
+            <ul>
+                <li><code>-X GET</code> — метод запроса (GET по умолчанию)</li>
+                <li><code>-H "Content-Type: application/json"</code> — заголовки</li>
+                <li><code>-d '{"key": "value"}'</code> — данные для POST</li>
+                <li><code>-s</code> — тихий режим (без прогресса)</li>
+            </ul>
+        </div>
+
+        <div class="curl-examples">
+            <h3>🧪 Примеры curl команд для API</h3>
+            <p>Ниже примеры команд для тестирования роутов сервера. Нажмите кнопку "Тест" для отправки запроса через HTMX (результат появится ниже).</p>
+
+            <div class="example">
+                <h4>GET /api/ — Главная страница (JSON)</h4>
+                <p>Возвращает приветственное сообщение в формате JSON.</p>
+                <pre><code>curl http://localhost:3000/api/</code></pre>
+                <button hx-get="/api/" hx-target="#result1" hx-swap="innerHTML">Тест</button>
+                <div id="result1" class="result"></div>
+            </div>
+
+            <div class="example">
+                <h4>GET /api/status — Статус сервера (JSON)</h4>
+                <p>Показывает статус сервера, uptime и использование памяти.</p>
+                <pre><code>curl http://localhost:3000/api/status</code></pre>
+                <button hx-get="/api/status" hx-target="#result2" hx-swap="innerHTML">Тест</button>
+                <div id="result2" class="result"></div>
+            </div>
+
+            <div class="example">
+                <h4>GET /api/hello — Пример API (JSON)</h4>
+                <p>Простой API-роут с данными сервера.</p>
+                <pre><code>curl http://localhost:3000/api/hello</code></pre>
+                <button hx-get="/api/hello" hx-target="#result3" hx-swap="innerHTML">Тест</button>
+                <div id="result3" class="result"></div>
+            </div>
+
+            <div class="example">
+                <h4>GET /api/info/port — Текущий порт (JSON)</h4>
+                <p>Возвращает порт, на котором работает сервер.</p>
+                <pre><code>curl http://localhost:3000/api/info/port</code></pre>
+                <button hx-get="/api/info/port" hx-target="#result4" hx-swap="innerHTML">Тест</button>
+                <div id="result4" class="result"></div>
+            </div>
+
+            <div class="example">
+                <h4>GET /api/info/status — Статус сервера (JSON)</h4>
+                <p>Краткий статус и uptime.</p>
+                <pre><code>curl http://localhost:3000/api/info/status</code></pre>
+                <button hx-get="/api/info/status" hx-target="#result5" hx-swap="innerHTML">Тест</button>
+                <div id="result5" class="result"></div>
+            </div>
+
+            <div class="example">
+                <h4>GET /api/info/uptime — Время запуска (JSON)</h4>
+                <p>Показывает время работы сервера и время запуска.</p>
+                <pre><code>curl http://localhost:3000/api/info/uptime</code></pre>
+                <button hx-get="/api/info/uptime" hx-target="#result6" hx-swap="innerHTML">Тест</button>
+                <div id="result6" class="result"></div>
+            </div>
+
+            <div class="example">
+                <h4>GET /htmx/ — Главная страница (HTML для HTMX)</h4>
+                <p>HTML-версия для динамических обновлений.</p>
+                <pre><code>curl http://localhost:3000/htmx/</code></pre>
+                <button hx-get="/htmx/" hx-target="#result7" hx-swap="innerHTML">Тест</button>
+                <div id="result7" class="result"></div>
+            </div>
+
+            <div class="example">
+                <h4>GET /htmx/status — Статус сервера (HTML для HTMX)</h4>
+                <p>HTML-статус для HTMX.</p>
+                <pre><code>curl http://localhost:3000/htmx/status</code></pre>
+                <button hx-get="/htmx/status" hx-target="#result8" hx-swap="innerHTML">Тест</button>
+                <div id="result8" class="result"></div>
+            </div>
+
+            <div class="example">
+                <h4>GET /htmx/api/hello — API hello (HTML для HTMX)</h4>
+                <p>HTML-версия API.</p>
+                <pre><code>curl http://localhost:3000/htmx/api/hello</code></pre>
+                <button hx-get="/htmx/api/hello" hx-target="#result9" hx-swap="innerHTML">Тест</button>
+                <div id="result9" class="result"></div>
+            </div>
+
+            <div class="example">
+                <h4>GET /htmx/nonexistent — Тест 404 (HTML для HTMX)</h4>
+                <p>Тестирование ошибки 404.</p>
+                <pre><code>curl http://localhost:3000/htmx/nonexistent</code></pre>
+                <button hx-get="/htmx/nonexistent" hx-target="#result10" hx-swap="innerHTML">Тест</button>
+                <div id="result10" class="result"></div>
+            </div>
+        </div>
+
+        <div class="curl-tips">
+            <h3>💡 Советы по использованию curl</h3>
+            <ul>
+                <li>Установите curl: В macOS/Linux он предустановлен, в Windows — скачайте с официального сайта.</li>
+                <li>Для форматированного вывода JSON: <code>curl http://localhost:3000/api/ | jq</code> (jq — JSON processor).</li>
+                <li>Сохранить ответ в файл: <code>curl -o response.json http://localhost:3000/api/</code></li>
+                <li>Тестируйте локально: Замените localhost на IP сервера для удаленного доступа.</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>
